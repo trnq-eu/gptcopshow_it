@@ -7,6 +7,14 @@ import datetime
 # Ottieni la directory di lavoro corrente
 current_working_directory = os.getcwd()
 
+# Creare una cartella "site" se non esiste
+site_folder = os.path.join(current_working_directory, 'site')
+os.makedirs(site_folder, exist_ok=True)
+
+# Creare una cartella "cases" dentro "site" se non esiste
+cases_folder = os.path.join(site_folder, 'cases')
+os.makedirs(cases_folder, exist_ok=True)
+
 template_env = Environment(loader=FileSystemLoader(searchpath='./site/templates'))
 
 index_template = template_env.get_template('index_layout.html')
@@ -39,6 +47,7 @@ for md_file in md_files:
 
         # Genera le pagine html dei singoli casi
         output_file = f"{os.path.splitext(md_file)[0]}_output.html"
+        case_output_path = os.path.join(cases_folder, output_file)
         output = case_template.render(
             date=date_obj,
             title=metadata.get('title', 'senza titolo'),
@@ -46,15 +55,18 @@ for md_file in md_files:
             content=markdown(markdown_content)
         )
 
-        with open(output_file, 'w', encoding='utf-8') as f:
+        with open(case_output_path, 'w', encoding='utf-8') as f:
             f.write(output)
         print(f'Genera {output_file} from {md_file}')
+
+        # Calcola il percorso relativo
+        relative_path = os.path.relpath(case_output_path, current_working_directory)
 
         cases.append({
             'date': date_obj,
             'title': metadata.get('title', 'senza titolo'),
             'case_number': metadata.get('case_number', 'senza numero'),
-            'filename': output_file
+            'filename': relative_path
         })
 
 # Ordina gli articoli per data dal più recente
@@ -63,12 +75,13 @@ sorted_cases = sorted(cases, key=lambda x: x['case_number'], reverse=True)
 # Inserisci i dati all'interno del template
 index_output = index_template.render(cases=sorted_cases)
 
-# Salva il risultato nella home page
-with open('index.html', 'w', encoding='utf-8') as f:
+# Salva il risultato nella home page dentro la cartella "site"
+index_output_path = os.path.join(site_folder, 'index.html')
+with open(index_output_path, 'w', encoding='utf-8') as f:
     f.write(index_output)
 
 print('Home page aggiornata')
-print(current_working_directory)
+print(site_folder)
 
 # Stampa a console il contenuto della lista dei casi
 print("Elenco dei casi:")

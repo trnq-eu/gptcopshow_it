@@ -1,0 +1,67 @@
+q {
+    color: gray;
+    font-style: italic;
+    
+}
+
+
+ul {
+    margin-top: 20px;
+}
+
+
+.vertical-center {
+    margin-top: 20%;  /* Fallback for browsers do NOT support vh unit */
+    margin-top: 20vh; /* These two lines are counted as one :-)       */
+    margin-bottom: 7vh;
+    margin-bottom: 8px;  /* Fallback for browsers do NOT support vh unit */
+    display: flex;
+    align-items: center;
+    text-align: center;
+  }
+
+.menu-cont {
+    margin-top: 10px;
+}
+
+.fixed-bottom {
+    margin-bottom: 10px;
+}
+
+#disclaimer {
+    margin-top: 30px;
+}
+
+
+details {
+    margin: 10px;
+    border: 1px solid rgb(229, 229, 230);
+    border-radius: 4px;
+    padding: .5em .5em 0;
+    font-family: 'Montserrat', sans-serif;
+        }
+
+summary {
+    font-weight: lighter;
+    margin: -.5em -.5em 0;
+    padding: .5em;
+    font-family: 'Open Sans', sans-serif;
+        }
+
+details summary { 
+  cursor: pointer;
+        }
+
+details summary > * {
+  display: inline;
+        }
+
+details[open] {
+    padding: .5em;
+        }
+
+details[open] summary {
+    border-bottom: 1px solid #aaa;
+    margin-bottom: .5em;
+        }
+
